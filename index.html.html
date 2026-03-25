@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medagoni Pavani — AI/ML Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --accent: #7fffb2;
+    --accent2: #5b8aff;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --border: rgba(255,255,255,0.07);
+    --glow: rgba(127,255,178,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(127,255,178,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(127,255,178,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 5vw 80px;
+    z-index: 1;
+  }
+
+  .hero-inner { max-width: 800px; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    padding: 6px 14px;
+    border: 1px solid rgba(127,255,178,0.3);
+    border-radius: 2px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 9vw, 100px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    color: var(--text);
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 460px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: #a0ffc8; box-shadow: 0 0 30px var(--glow); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 5vw;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .scroll-line {
+    width: 40px;
+    height: 1px;
+    background: var(--muted);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: slide 2s infinite;
+  }
+  @keyframes slide { to { left: 100%; } }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 5vw;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 60px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  /* ABOUT */
+  #about .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+  .stat-box:hover { border-color: rgba(127,255,178,0.3); }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* SKILLS */
+  #skills { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+  }
+
+  .skill-category {
+    padding: 32px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: all 0.2s;
+  }
+  .skill-category:hover {
+    border-color: rgba(127,255,178,0.3);
+    background: rgba(127,255,178,0.03);
+  }
+
+  .skill-cat-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-tag {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .skill-category:hover .skill-tag { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.3s ease;
+  }
+  .project-card:hover::before { height: 100%; }
+  .project-card:hover { border-color: rgba(127,255,178,0.2); }
+
+  .project-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    position: absolute;
+    top: 20px; right: 24px;
+    letter-spacing: -4px;
+  }
+
+  .project-type {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 16px;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .project-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tech-pill {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 3px 10px;
+    border: 1px solid rgba(127,255,178,0.25);
+    border-radius: 2px;
+  }
+
+  /* EDUCATION */
+  #education { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 56px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -36px; top: 6px;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(127,255,178,0.5);
+  }
+
+  .timeline-year {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .timeline-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-school {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .timeline-gpa {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    padding: 4px 12px;
+    border: 1px solid rgba(127,255,178,0.2);
+    border-radius: 2px;
+  }
+
+  /* CERTIFICATIONS */
+  .certs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .cert-item:hover { border-color: rgba(127,255,178,0.3); padding-left: 36px; }
+
+  .cert-icon {
+    font-size: 20px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(127,255,178,0.08);
+    border: 1px solid rgba(127,255,178,0.15);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 2px;
+  }
+  .cert-org { font-size: 12px; color: var(--muted); }
+
+  /* CONTACT */
+  #contact {
+    text-align: center;
+  }
+
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+
+  .contact-inner h2 { font-size: clamp(40px, 7vw, 80px); margin-bottom: 16px; }
+  .contact-inner p { color: var(--muted); margin-bottom: 48px; font-size: 15px; }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    z-index: 1;
+    position: relative;
+    padding: 32px 5vw;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    #about .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    nav { padding: 16px 5vw; }
+    .nav-links { gap: 20px; }
+    .nav-links li:nth-child(n+4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MP.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Available for internships</div>
+    <h1>Medagoni<br><span>Pavani</span></h1>
+    <p class="hero-desc">
+      AI & Machine Learning engineer building intelligent systems — from multimodal patient care models to NLP-powered tools.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">View Projects →</a>
+      <a href="mailto:pavanimedagoni@gmail.com" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 — About</div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <h2>Building the<br>future with AI.</h2>
+      <br>
+      <p>I'm a B.Tech student specializing in Artificial Intelligence & Machine Learning at BV Raju Institute of Technology, with a strong academic record and a passion for applying ML to real-world problems.</p>
+      <p>My work spans healthcare AI, predictive analytics, NLP, and full-stack development. I'm actively looking for internship opportunities to bring ideas to life.</p>
+      <p>From designing BERT-based embedding pipelines to building deep learning calculators — I love tackling problems that matter.</p>
+    </div>
+    <div class="reveal" style="transition-delay: 0.15s">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-num">8.38</div>
+          <div class="stat-label">Current CGPA</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">ML Projects</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">IIT</div>
+          <div class="stat-label">Hyderabad Hackathon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">02 — Skills</div>
+  <h2 class="reveal" style="margin-bottom:48px;">Technical<br>Arsenal.</h2>
+  <div class="skills-grid">
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+      </div>
+    </div>
+    <div class="skill-category reveal" style="transition-delay:0.1s">
+      <div class="skill-cat-title">AI / ML</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">Deep Learning</span>
+        <span class="skill-tag">NLP</span>
+        <span class="skill-tag">BERT</span>
+        <span class="skill-tag">CNN</span>
+        <span class="skill-tag">RNN</span>
+      </div>
+    </div>
+    <div class="skill-category reveal" style="transition-delay:0.2s">
+      <div class="skill-cat-title">Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">RESTful APIs</span>
+        <span class="skill-tag">DBMS</span>
+        <span class="skill-tag">Data Structures</span>
+      </div>
+    </div>
+    <div class="skill-category reveal" style="transition-delay:0.3s">
+      <div class="skill-cat-title">Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+        <span class="skill-tag">Excel</span>
+        <span class="skill-tag">Canva</span>
+        <span class="skill-tag">PowerPoint</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">03 — Projects</div>
+  <h2 class="reveal" style="margin-bottom:48px;">Selected<br>Work.</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-type">Machine Learning · Healthcare</div>
+      <div class="project-title">Multimodal Emergency Patient Care Prediction</div>
+      <div class="project-desc">Predicts emergency patient risk and ICU admission using structured EHR data and triage notes. Leverages BERT-based NLP embeddings with multimodal feature fusion for improved accuracy.</div>
+      <div class="project-techs">
+        <span class="tech-pill">BERT</span>
+        <span class="tech-pill">NLP</span>
+        <span class="tech-pill">EHR</span>
+        <span class="tech-pill">Feature Fusion</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.1s">
+      <div class="project-num">02</div>
+      <div class="project-type">Machine Learning · Analytics</div>
+      <div class="project-title">Crime Rate Prediction</div>
+      <div class="project-desc">Predictive analytics model analyzing crime datasets to identify temporal and spatial patterns. Includes data preprocessing, feature engineering, and risk prediction pipelines.</div>
+      <div class="project-techs">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Scikit-Learn</span>
+        <span class="tech-pill">Feature Eng.</span>
+        <span class="tech-pill">Spatial Analysis</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.2s">
+      <div class="project-num">03</div>
+      <div class="project-type">AI · NLP</div>
+      <div class="project-title">YouTube Video Transcript Summarizer</div>
+      <div class="project-desc">AI-powered app that extracts YouTube transcripts via API and uses NLP-based summarization to generate concise, context-aware summaries of long-form video content.</div>
+      <div class="project-techs">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">NLP</span>
+        <span class="tech-pill">YouTube API</span>
+        <span class="tech-pill">Summarization</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.1s">
+      <div class="project-num">04</div>
+      <div class="project-type">Full-Stack · NLP</div>
+      <div class="project-title">NLP Text Analysis Tool</div>
+      <div class="project-desc">Full-stack NLP application with FastAPI backend and HTML/CSS/JS frontend. Implements text preprocessing and analysis via RESTful APIs with a responsive, lightweight UI.</div>
+      <div class="project-techs">
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">JavaScript</span>
+        <span class="tech-pill">REST API</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.2s">
+      <div class="project-num">05</div>
+      <div class="project-type">Deep Learning · Computer Vision</div>
+      <div class="project-title">Deep Learning Virtual Calculator</div>
+      <div class="project-desc">Recognizes handwritten equations using CNNs and understands natural language via RNNs. Provides real-time, step-by-step mathematical solutions for students and professionals.</div>
+      <div class="project-techs">
+        <span class="tech-pill">CNN</span>
+        <span class="tech-pill">RNN</span>
+        <span class="tech-pill">Computer Vision</span>
+        <span class="tech-pill">NLP</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">04 — Education</div>
+  <h2 class="reveal" style="margin-bottom:60px;">Academic<br>Journey.</h2>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2023 — 2027</div>
+      <div class="timeline-degree">B.Tech — AI & Machine Learning</div>
+      <div class="timeline-school">BV Raju Institute of Technology, Narsapur</div>
+      <div class="timeline-gpa">⬡ CGPA: 8.38</div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.1s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2021 — 2024</div>
+      <div class="timeline-degree">Diploma — Computer Science Engineering</div>
+      <div class="timeline-school">Government Polytechnic, Masabtank</div>
+      <div class="timeline-gpa">⬡ CGPA: 8.87</div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:0.2s">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2021</div>
+      <div class="timeline-degree">SSC — 10th Class</div>
+      <div class="timeline-school">Secondary School Certificate</div>
+      <div class="timeline-gpa">⬡ GPA: 10 / 10</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">05 — Achievements</div>
+  <h2 class="reveal" style="margin-bottom:48px;">Certs &<br>Wins.</h2>
+  <div class="certs-list">
+    <div class="cert-item reveal">
+      <div class="cert-icon">🌐</div>
+      <div>
+        <div class="cert-name">CCNA: Introduction to Networks</div>
+        <div class="cert-org">Cisco Networking Academy</div>
+      </div>
+    </div>
+    <div class="cert-item reveal" style="transition-delay:0.08s">
+      <div class="cert-icon">🏢</div>
+      <div>
+        <div class="cert-name">General Completion Certificate</div>
+        <div class="cert-org">Infosys Springboard</div>
+      </div>
+    </div>
+    <div class="cert-item reveal" style="transition-delay:0.16s">
+      <div class="cert-icon">⚡</div>
+      <div>
+        <div class="cert-name">Hackathon Participant</div>
+        <div class="cert-org">IIT Hyderabad</div>
+      </div>
+    </div>
+    <div class="cert-item reveal" style="transition-delay:0.24s">
+      <div class="cert-icon">📱</div>
+      <div>
+        <div class="cert-name">Android App Development Workshop</div>
+        <div class="cert-org">IIT Hyderabad</div>
+      </div>
+    </div>
+    <div class="cert-item reveal" style="transition-delay:0.32s">
+      <div class="cert-icon">💻</div>
+      <div>
+        <div class="cert-name">Coding & Problem Solving Proficiency</div>
+        <div class="cert-org">Smart Interviews</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label" style="justify-content:center">06 — Contact</div>
+    <h2 class="reveal">Let's<br><span style="color:var(--accent)">Connect.</span></h2>
+    <p class="reveal" style="transition-delay:0.1s">Open to internship opportunities in ML, software development, and web development. Let's build something great together.</p>
+    <div class="contact-links reveal" style="transition-delay:0.2s">
+      <a href="mailto:pavanimedagoni@gmail.com" class="btn btn-primary">Email Me →</a>
+      <a href="https://www.linkedin.com/in/pavani-medagoni-53890633b/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">LinkedIn</a>
+      <a href="https://github.com/pavani0005" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Medagoni Pavani</span>
+  <span style="color:var(--accent)">AI/ML Engineer · Narsapur, India</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
